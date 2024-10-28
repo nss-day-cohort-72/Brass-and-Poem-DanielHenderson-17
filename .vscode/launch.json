@@ -12,9 +12,9 @@
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/BrassAndPoem/bin/Debug/net6.0/BrassAndPoem.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/BrassAndPoem",
+            "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "internalConsole",
+            "console": "integratedTerminal",
             "stopAtEntry": false
         },
         {
