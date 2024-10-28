@@ -37,6 +37,9 @@
                     break;
                 case "5":
                     return;
+                default:
+                    Console.WriteLine("Invalid choice, please try again.");
+                    break;
             }
         }
     }
