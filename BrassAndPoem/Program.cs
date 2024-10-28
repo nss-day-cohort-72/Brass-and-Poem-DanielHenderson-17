@@ -1,118 +1,154 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace BrassAndPoem
+﻿public class Program
 {
-    class Program
+    //available from outside the class, able to run without an instance of itself, and does not return a value.
+    public static void Main()
     {
-        static void Main(string[] args)
+
+        //This line essentially creates and populates a list called productTypes with two specific ProductType objects. 
+        var productTypes = new List<ProductType>
         {
-            var productTypes = new List<ProductType>
+            new ProductType { Id = 1, Title = "Poetry Book" },
+            new ProductType { Id = 2, Title = "Brass Instrument" }
+        };
+
+        //Declare a list of product types and a list of products. When creating the lists, add at least two product types and five products.
+        var products = new List<Product>
+        {
+            new Product { Name = "Haiku", Price = 15.99m, ProductTypeId = 1 },
+            new Product { Name = "Sonnet Poems", Price = 12.50m, ProductTypeId = 1 },
+            new Product { Name = "Trumpet", Price = 499.99m, ProductTypeId = 2 },
+            new Product { Name = "Saxophone", Price = 699.50m, ProductTypeId = 2 },
+            new Product { Name = "French Horn", Price = 289.00m, ProductTypeId = 2 }
+        };
+
+        while (true) //Becomes false if case 5 is selected as it will return and end the program. This is why I hard coded this to true.
+        {
+            DisplayMenu();
+            //Basically the choice variable is set to the user's input of 1 through 5.
+            var choice = Console.ReadLine();
+            //Create a loop that asks the user to choose an option, and will continue running until the use selects 5, at which point the program will finish.
+            switch (choice)
             {
-                new ProductType { Id = 1, Title = "Poetry Book" },
-                new ProductType { Id = 2, Title = "Brass Instrument" }
-            };
-
-            var products = new List<Product>
-            {
-                new Product { Name = "Shakespeare's Sonnets", Price = 9.99m, ProductTypeId = 1 },
-                new Product { Name = "The Odyssey", Price = 12.99m, ProductTypeId = 1 },
-                new Product { Name = "Trumpet", Price = 199.99m, ProductTypeId = 2 },
-                new Product { Name = "Trombone", Price = 299.99m, ProductTypeId = 2 },
-                new Product { Name = "Flute", Price = 149.99m, ProductTypeId = 2 }
-            };
-
-            Console.WriteLine("Welcome to Brass & Poem");
-
-            while (true)
-            {
-                DisplayMenu();
-
-                var input = Console.ReadLine();
-
-                if (input == "1")
+                case "1":
+                    //To test whether these methods work, add logic to the program loop to call the appropriate method when a user chooses an option:
                     DisplayAllProducts(products, productTypes);
-                else if (input == "2")
-                    DeleteProduct(products, productTypes);
-                else if (input == "3")
-                    AddProduct(products, productTypes);
-                else if (input == "4")
-                    UpdateProduct(products, productTypes);
-                else if (input == "5")
                     break;
-            }
-        }
-
-        static void DisplayMenu()
-        {
-            Console.WriteLine("\nSelect an option:");
-            Console.WriteLine("1. Display all products");
-            Console.WriteLine("2. Delete a product");
-            Console.WriteLine("3. Add a new product");
-            Console.WriteLine("4. Update product properties");
-            Console.WriteLine("5. Exit");
-        }
-
-        static void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
-        {
-            for (int i = 0; i < products.Count; i++)
-            {
-                var productType = productTypes.First(pt => pt.Id == products[i].ProductTypeId);
-                Console.WriteLine($"{i + 1}. {products[i].Name} - ${products[i].Price} ({productType.Title})");
-            }
-        }
-
-        static void DeleteProduct(List<Product> products, List<ProductType> productTypes)
-        {
-            DisplayAllProducts(products, productTypes);
-            Console.Write("Enter the number of the product to delete: ");
-            if (int.TryParse(Console.ReadLine(), out int productNumber) && productNumber > 0 && productNumber <= products.Count)
-            {
-                products.RemoveAt(productNumber - 1);
-            }
-        }
-
-        static void AddProduct(List<Product> products, List<ProductType> productTypes)
-        {
-            Console.Write("Enter the name of the new product: ");
-            var name = Console.ReadLine();
-            Console.Write("Enter the price of the new product: ");
-            if (decimal.TryParse(Console.ReadLine(), out decimal price))
-            {
-                for (int i = 0; i < productTypes.Count; i++)
-                    Console.WriteLine($"{i + 1}. {productTypes[i].Title}");
-                Console.Write("Select a product type: ");
-                if (int.TryParse(Console.ReadLine(), out int productTypeNumber) && productTypeNumber > 0 && productTypeNumber <= productTypes.Count)
-                {
-                    var productTypeId = productTypes[productTypeNumber - 1].Id;
-                    products.Add(new Product { Name = name, Price = price, ProductTypeId = productTypeId });
-                }
-            }
-        }
-
-        static void UpdateProduct(List<Product> products, List<ProductType> productTypes)
-        {
-            DisplayAllProducts(products, productTypes);
-            Console.Write("Enter the number of the product to update: ");
-            if (int.TryParse(Console.ReadLine(), out int productNumber) && productNumber > 0 && productNumber <= products.Count)
-            {
-                var product = products[productNumber - 1];
-                Console.Write($"Enter the new name ({product.Name}): ");
-                var name = Console.ReadLine();
-                if (!string.IsNullOrEmpty(name))
-                    product.Name = name;
-
-                Console.Write($"Enter the new price ({product.Price}): ");
-                if (decimal.TryParse(Console.ReadLine(), out decimal price))
-                    product.Price = price;
-
-                for (int i = 0; i < productTypes.Count; i++)
-                    Console.WriteLine($"{i + 1}. {productTypes[i].Title}");
-                Console.Write("Select a new product type or press Enter to keep current: ");
-                if (int.TryParse(Console.ReadLine(), out int productTypeNumber) && productTypeNumber > 0 && productTypeNumber <= productTypes.Count)
-                    product.ProductTypeId = productTypes[productTypeNumber - 1].Id;
+                case "2":
+                    DeleteProduct(products, productTypes);
+                    break;
+                case "3":
+                    AddProduct(products, productTypes);
+                    break;
+                case "4":
+                    UpdateProduct(products, productTypes);
+                    break;
+                case "5":
+                    return;
             }
         }
     }
+
+    //Implement the DisplayMenu Method
+    static void DisplayMenu()
+    {
+        //Display a welcome message for the application
+        Console.WriteLine("Welcome to Brass & Poem");
+
+        //The DisplayMenu method should display the following options to the console:
+        Console.WriteLine("1. Display all products");
+        Console.WriteLine("2. Delete a product");
+        Console.WriteLine("3. Add a new product");
+        Console.WriteLine("4. Update product properties");
+        Console.WriteLine("5. Exit");
+        Console.Write("Choose an option: ");
+    }
+
+    //Implement the DisplayAllProducts Method
+    static void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
+    {
+        //Iterate over the products and display each product's name and price on a new line in the console. Start the line with the number of that product in the List (have the list start with 1, not 0).
+        int index = 1;
+        foreach (var product in products)
+        {
+            //Find the product type for each product and display it next to the product's name and price. I did this with LINQ First method.
+            var productType = productTypes.First(productType => productType.Id == product.ProductTypeId);
+            Console.WriteLine($"{index}. {product.Name} - ${product.Price} ({productType.Title})");
+            index++;
+        }
+    }
+
+    //Implement the DeleteProduct Method
+    static void DeleteProduct(List<Product> products, List<ProductType> productTypes)
+    {
+        //Display the products and prompt the user to enter the number of the product they want to delete.
+        DisplayAllProducts(products, productTypes);
+        //Find the product with the provided number and remove it from the list of products.
+        products.RemoveAt(int.Parse(Console.ReadLine()) - 1); //Remember that the list should start from 1.
+        Console.WriteLine("Product deleted.");
+    }
+
+    //Implement the AddProduct Method
+    static void AddProduct(List<Product> products, List<ProductType> productTypes)
+{
+    //Prompt the user to enter the name and price of the new product (in this order).
+    Console.Write("Enter product name: ");
+    string name = Console.ReadLine();
+    //Converts user input into a decimal value.
+    Console.Write("Enter product price: ");
+    decimal price = decimal.Parse(Console.ReadLine());
+
+    //Display the ProductTypes and prompt the user to choose a type for the new product
+    Console.WriteLine("Select a product type:");
+
+    int index = 1;
+    foreach (var productType in productTypes)
+    {
+        Console.WriteLine($"{index}. {productType.Title}");
+        index++;
+    }
+
+    //Get the product type ID based on the user's choice
+    int productTypeId = productTypes[int.Parse(Console.ReadLine()) - 1].Id;
+
+    //Add the newly created product to the list of products.
+    products.Add(new Product { Name = name, Price = price, ProductTypeId = productTypeId });
+    Console.WriteLine("Product added.");
+}
+
+
+    //Implement the UpdateProduct Method
+    static void UpdateProduct(List<Product> products, List<ProductType> productTypes)
+{
+    //Display the products and prompt the user to enter the number of the product they want to update.
+    DisplayAllProducts(products, productTypes);
+
+    //Find the product with the provided number and retrieve its reference.
+    var product = products[int.Parse(Console.ReadLine()) - 1]; //Remember that the list should start from 1.
+
+    //Prompt the user to enter the updated name, price, and product type for the product (in that order).
+    Console.Write("Enter new name (leave blank to keep current): ");
+    string name = Console.ReadLine();
+    if (!string.IsNullOrEmpty(name)) product.Name = name;
+
+    Console.Write("Enter new price (leave blank to keep current): ");
+    string priceInput = Console.ReadLine();
+    if (!string.IsNullOrEmpty(priceInput)) product.Price = decimal.Parse(priceInput);
+
+    Console.WriteLine("Select a new product type (leave blank to keep current):");
+
+    int index = 1;
+    foreach (var productType in productTypes)
+    {
+        Console.WriteLine($"{index}. {productType.Title}");
+        index++;
+    }
+
+    //Update the product's ProductTypeId if the user entered a new type.
+    string typeInput = Console.ReadLine();
+    if (!string.IsNullOrEmpty(typeInput))
+        product.ProductTypeId = productTypes[int.Parse(typeInput) - 1].Id;
+
+    Console.WriteLine("Product updated.");
+}
+
 }

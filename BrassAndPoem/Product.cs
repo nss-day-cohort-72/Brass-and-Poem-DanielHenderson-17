@@ -6,3 +6,4 @@ public class Product
     public int ProductTypeId { get; set; }
 }
 
+
